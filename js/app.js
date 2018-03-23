@@ -46,7 +46,7 @@ Player.prototype.takeLife = function () {
         this.lifes--;
         deleteHeartFromBoard();
     } else {
-        showGameOverModal();
+        endGame();
     }
 }
 
@@ -93,8 +93,8 @@ Gem.prototype.render = function () {
 };
 
 let player = new Player(202, 570);
-const allEnemies = [];
-const gems = [];
+let allEnemies = [];
+let gems = [];
 let collectedGems = [];
 
 function createGameEntities() {
@@ -122,11 +122,13 @@ function createGameEntities() {
     gems.push(orangeGem, greenGem, blueGem, starGem);
 }
 
-
 function setupEventListeners() {
     const startGame = document.getElementById('start-game-btn');
     startGame.addEventListener('click', createGameEntities);
+    addEventListenersToCanvas();
+}
 
+function addEventListenersToCanvas() {
     document.addEventListener('keyup', function (e) {
         const allowedKeys = {
             37: 'left',
@@ -138,8 +140,11 @@ function setupEventListeners() {
     });
 }
 
-function initializeGame() {
-    setupEventListeners();
+function endGame() {
+    document.removeEventListener('keyup', player.handleInput);
+    allEnemies = [];
+    gems = [];
+    showGameOverModal();
 }
 
 function deleteHeartFromBoard() {
@@ -154,4 +159,7 @@ function showGameOverModal() {
     modal.style.display = 'block';
 }
 
+function initializeGame() {
+    setupEventListeners();
+}
 initializeGame();
