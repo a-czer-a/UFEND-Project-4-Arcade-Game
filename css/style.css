@@ -86,14 +86,3 @@ button {
     text-transform: uppercase;
     font-size: 2.2em;
 }
-
-/* AUDIO */
-
-#sound-effect {
-    display: none;
-}
-
-
-/* MEDIA QUERIES */
-
-@media screen and (max-width:)
