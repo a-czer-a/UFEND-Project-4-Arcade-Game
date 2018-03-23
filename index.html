@@ -1,13 +1,45 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
+    <title>Classic Arcade Game Clone</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:400,600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
 </head>
+
 <body>
+    <header>
+        <!--        <h1>Classic Arcade Game Clone</h1>-->
+        <div class="container">
+            <button id="start-game-btn">Start game</button>
+            <div class="board">
+                <div id="lifes">
+                    <img src="../UFEND-Project-4-Arcade-Game/images/Heart.png" alt="heart">
+                    <img src="../UFEND-Project-4-Arcade-Game/images/Heart.png" alt="heart">
+                    <img src="../UFEND-Project-4-Arcade-Game/images/Heart.png" alt="heart">
+                </div>
+                <p id="score">Score: 0</p>
+            </div>
+        </div>
+
+        <div id="popup-window" class="modal">
+            <div class="modal-content">
+                <h3>Game over...</h3>
+                <!--
+<p>Wanna try again?</p>
+<button id="modal-btn" class="new-game-btn">Let's play</button>
+-->
+            </div>
+        </div>
+    </header>
+
+    <!--    <audio id="sound-effect" src="audio/Collect_Point_00.mp3"></audio>-->
+
     <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
+    <script src="js/app.js"></script>
 </body>
+
 </html>

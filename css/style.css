@@ -1,3 +1,99 @@
 body {
     text-align: center;
+    font-family: 'Saira Extra Condensed', sans-serif;
 }
+
+/* BOARD */
+
+h1 {
+    font-size: 2em;
+}
+
+button {
+    width: 120px;
+    height: 35px;
+    border-radius: 4px;
+    background-color: #81c784;
+    font-size: 0.7em;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.board {
+    width: 450px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#lifes,
+#score {
+    margin-bottom: -50px;
+}
+
+#lifes {
+    display: inline-block;
+    float: left;
+}
+
+#lifes img {
+    width: 25px;
+}
+
+#score {
+    float: right;
+    text-transform: uppercase;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.board::after {
+    clear: both;
+}
+
+/* MODAL */
+
+.modal {
+    display: none;
+    z-index: 1;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(40, 40, 40, 0.9);
+    color: #000;
+    text-align: center;
+}
+
+.modal-content {
+    margin: 10% auto;
+    padding: 30px;
+    width: 70%;
+    font-size: 1.3em;
+    font-family: 'Press Start 2P', cursive;
+    background-color: #eee;
+    border-radius: 6px;
+    border: 1px solid #000;
+    -webkit-box-shadow: 7px 7px 15px 0 rgba(0, 0, 0, 0.3), 0 7px 25px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 7px 7px 15px 0 rgba(0, 0, 0, 0.3), 0 7px 25px 0 rgba(0, 0, 0, 0.2);
+}
+
+.new-game-btn {
+    margin-bottom: 20px;
+}
+
+.modal h3 {
+    text-transform: uppercase;
+    font-size: 2.2em;
+}
+
+/* AUDIO */
+
+#sound-effect {
+    display: none;
+}
+
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width:)
