@@ -79,13 +79,13 @@ Player.prototype.handleInput = function (key) {
     };
 }
 
-const Gem = function (x, y, sprite, value) {
+const Gem = function (sprite, value) {
     // X positions: 0, 101, 202, 303, 404
     this.x = (101 * Math.floor(Math.random() * 4) + 0);
     // Y positions: 58, 141, 224
     this.y = (58 + (83 * Math.floor(Math.random() * 3) + 0));
     this.sprite = sprite;
-    this.value = 150;
+    this.value = value;
 }
 
 Gem.prototype.render = function () {
@@ -95,7 +95,7 @@ Gem.prototype.render = function () {
 let player = new Player(202, 570);
 let allEnemies = [];
 let gems = [];
-let collectedGems = [];
+let extraGems = [];
 
 function createGameEntities() {
     const bug1 = new Enemy(0, 58, 200);
@@ -107,20 +107,19 @@ function createGameEntities() {
     const bug7 = new Enemy(-300, 141, 120);
     const bug8 = new Enemy(-50, 58, 140);
 
-
-    const orangeGem = new Gem(this.x, this.y, 'images/gem-orange.png');
-    const greenGem = new Gem(this.x, this.y, 'images/gem-green.png');
-    const blueGem = new Gem(this.x, this.y, 'images/gem-blue.png');
-    const starGem = new Gem(this.x, this.y, 'images/star.png');
-
     allEnemies.splice(0);
     allEnemies.push(bug1, bug2, bug3, bug4, bug5, bug6);
 
-    player = new Player(202, 390);
+    const orangeGem = new Gem('images/gem-orange.png', 100);
+    const greenGem = new Gem('images/gem-green.png', 150);
+    const starGem = new Gem('images/Star.png', 200);
 
     gems.splice(0);
-    gems.push(orangeGem, greenGem, blueGem, starGem);
+    gems.push(orangeGem, greenGem, starGem);
+
+    player = new Player(202, 390);
 }
+
 
 function setupEventListeners() {
     const startGame = document.getElementById('start-game-btn');
@@ -128,22 +127,26 @@ function setupEventListeners() {
     addEventListenersToCanvas();
 }
 
+
+const keyUpEventListener = function (e) {
+    const allowedKeys = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down'
+    };
+    player.handleInput(allowedKeys[e.keyCode]);
+};
+
 function addEventListenersToCanvas() {
-    document.addEventListener('keyup', function (e) {
-        const allowedKeys = {
-            37: 'left',
-            38: 'up',
-            39: 'right',
-            40: 'down'
-        };
-        player.handleInput(allowedKeys[e.keyCode]);
-    });
+    document.addEventListener('keyup', keyUpEventListener);
 }
 
 function endGame() {
-    document.removeEventListener('keyup', player.handleInput);
+    document.removeEventListener('keyup', keyUpEventListener);
     allEnemies = [];
     gems = [];
+    extraGems = [];
     showGameOverModal();
 }
 
@@ -152,8 +155,14 @@ function deleteHeartFromBoard() {
     lifes.removeChild(lifes.lastElementChild);
 }
 
+function addHeartToBoard() {
+    const lifes = document.getElementById('lifes');
+    const newHeart = document.createElement('img');
+    newHeart.setAttribute('src', 'images/Heart.png');
+    lifes.appendChild(newHeart);
+}
+
 function showGameOverModal() {
-    // play game over sound
     new Audio('audio/Jingle_Lose_01.mp3').play();
     const modal = document.getElementById('popup-window');
     modal.style.display = 'block';

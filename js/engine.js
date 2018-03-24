@@ -23,8 +23,7 @@
          canvas = doc.createElement('canvas'),
          ctx = canvas.getContext('2d'),
          lastTime,
-         reachedWater = false,
-         collectedGem = false;
+         reachedWater = false;
 
      canvas.width = 505;
      canvas.height = 606;
@@ -48,6 +47,7 @@
           */
          update(dt);
          render();
+
 
          /* Set our lastTime variable which is used to determine the time delta
           * for the next time this function is called.
@@ -83,19 +83,18 @@
          updateEntities(dt);
          checkCollisions();
          collectGems();
+         collectExtraGems();
+         addExtraGems();
          checkWinningCondition();
      }
 
      function checkCollisions() {
          for (let i = 0; i < allEnemies.length; i++) {
              if (player.y === allEnemies[i].y) {
-                 if ((allEnemies[i].x + 30 >= player.x - 25) && (allEnemies[i].x - 30 <= player.x + 25)) {
-                     // play collision sound
+                 if ((allEnemies[i].x + 30 >= player.x - 20) && (allEnemies[i].x - 30 <= player.x + 20)) {
                      new Audio('audio/Shoot_01.mp3').play();
                      player.resetPosition();
                      player.takeLife();
-                     player.score = 0;
-                     score.innerHTML = `Score: ${player.score}`;
                  };
              }
          }
@@ -104,27 +103,47 @@
      function collectGems() {
          for (let i = 0; i < gems.length; i++) {
              if (player.y === gems[i].y) {
-                 if (gems[i].x === player.x && !collectedGem) {
-                     collectedGem = true;
-                     player.score += 150;
+                 if (gems[i].x === player.x) {
+                     player.score += gems[i].value;
                      updateScoreOnBoard();
-                     // play adding point sound
                      new Audio('audio/Collect_Point_00.mp3').play();
-                     collectedGems.push(gems[i]);
-                     removeCollectedGem();
+                     gems[i].x = -200;
                  }
              }
          }
      }
 
-     function removeCollectedGem() {
-         let gemOne = collectedGems.pop();
-         gemOne.x = -200;
-         collectedGem = false;
+     function collectExtraGems() {
+         for (let i = 0; i < extraGems.length; i++) {
+             if (player.y === extraGems[i].y) {
+                 if (extraGems[i].x === player.x) {
+                     if (extraGems[i].sprite === 'images/Heart.png') {
+                         addHeartToBoard();
+                         player.lifes += 1;
+                         //player.life();
+                         new Audio('audio/Pickup_02.mp3').play();
+                         extraGems[i].x = -200;
+                     } else {
+                         new Audio('audio/Collect_Point_00.mp3').play();
+                         player.score += gems[i].value;
+                         //player.score(gems[i].value)
+                         updateScoreOnBoard();
+                         extraGems[i].x = -200;
+                     }
+                 }
+             }
+         }
+     }
+
+     function addExtraGems() {
+         if (player.lifes === 1 && extraGems.length === 0) {
+             const heart = new Gem('images/Heart.png', 0);
+             const blueGem = new Gem('images/gem-blue.png', 150);
+             extraGems.push(heart, blueGem);
+         }
      }
 
      function checkWinningCondition() {
-         const score = document.getElementById('score');
          if (player.y < 58 && !reachedWater) {
              reachedWater = true;
              setTimeout(addPointsAndResetPosition, 400);
@@ -133,7 +152,6 @@
 
      function addPointsAndResetPosition() {
          player.score += 50;
-         // play adding point sound
          new Audio('audio/Collect_Point_00.mp3').play();
          updateScoreOnBoard();
          player.resetPosition();
@@ -156,10 +174,7 @@
          allEnemies.forEach(function (enemy) {
              enemy.update(dt);
          });
-         player.update();
-         //         gems.forEach(function (gem) {
-         //             gem.update();
-         //         });
+         //         player.update();     
      }
 
      /* This function initially draws the "game level", it will then call
@@ -218,9 +233,15 @@
          allEnemies.forEach(function (enemy) {
              enemy.render();
          });
+
          gems.forEach(function (gem) {
              gem.render();
          });
+
+         extraGems.forEach(function (extraGem) {
+             extraGem.render();
+         });
+
          player.render();
      }
 
@@ -229,7 +250,7 @@
       * those sorts of things. It's only called once by the init() method.
       */
      function reset() {
-         collectedGems = [];
+         extraGems = [];
      }
 
      /* Go ahead and load all of the images we know we're going to need to
@@ -245,7 +266,8 @@
         'images/gem-orange.png',
         'images/gem-green.png',
         'images/gem-blue.png',
-        'images/star.png',
+        'images/Star.png',
+        'images/Heart.png',
     ]);
 
      Resources.onReady(init);
