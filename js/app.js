@@ -125,6 +125,9 @@ function setupEventListeners() {
     const startGame = document.getElementById('start-game-btn');
     startGame.addEventListener('click', createGameEntities);
     addEventListenersToCanvas();
+    const newGame = document.getElementById('reload-game-btn');
+    newGame.addEventListener('click', reloadGame);
+    addEventListenersToCanvas();
 }
 
 
@@ -150,6 +153,10 @@ function endGame() {
     showGameOverModal();
 }
 
+function reloadGame() {
+    window.location.reload();
+}
+
 function deleteHeartFromBoard() {
     const lifes = document.getElementById('lifes');
     lifes.removeChild(lifes.lastElementChild);
@@ -171,4 +178,5 @@ function showGameOverModal() {
 function initializeGame() {
     setupEventListeners();
 }
+
 initializeGame();

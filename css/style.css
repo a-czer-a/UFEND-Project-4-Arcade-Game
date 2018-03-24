@@ -70,12 +70,15 @@ button {
     padding: 30px;
     width: 70%;
     font-size: 1.3em;
-    font-family: 'Press Start 2P', cursive;
     background-color: #eee;
     border-radius: 6px;
     border: 1px solid #000;
     -webkit-box-shadow: 7px 7px 15px 0 rgba(0, 0, 0, 0.3), 0 7px 25px 0 rgba(0, 0, 0, 0.2);
     box-shadow: 7px 7px 15px 0 rgba(0, 0, 0, 0.3), 0 7px 25px 0 rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+    font-family: 'Press Start 2P', cursive;
 }
 
 .new-game-btn {
