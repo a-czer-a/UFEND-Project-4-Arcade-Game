@@ -136,7 +136,7 @@
      function addExtraGems() {
          const heart = new Gem('images/Heart.png', 0);
          const blueGem = new Gem('images/gem-blue.png', 150);
-         const selectorStar = new Gem('images/Selector.png', 300);
+         const selectorStar = new Gem('images/Star-selector.png', 300);
          if (player.lifes === 1 && extraGems.length === 0) {
              extraGems.push(heart, blueGem, selectorStar);
          }
@@ -271,7 +271,7 @@
         'images/gem-blue.png',
         'images/Star.png',
         'images/Heart.png',
-         'images/Selector.png',
+         'images/Star-selector.png',
     ]);
 
      Resources.onReady(init);
