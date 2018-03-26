@@ -85,21 +85,27 @@ Player.prototype.handleInput = function (key) {
 
 const Gem = function (sprite, value) {
     // X positions: 0, 101, 202, 303, 404
-    //     this.x = (101 * Math.floor(Math.random() * 4) + 0);
     this.x = ((51 - 33) + (101 * Math.floor(Math.random() * 4) + 0));
     // Y positions: 58, 141, 224
-    // this.y = (58 + (83 * Math.floor(Math.random() * 3) + 0));
     this.y = ((83 + 70 - 55) + (83 * Math.floor(Math.random() * 3) + 0));
     this.sprite = sprite;
     this.value = value;
     this.spriteHeight = 66;
     this.spriteWidth = 111;
+    this.timeToHide = Math.round(Math.random() * (10 - 2)) + 2;
 }
 
 Gem.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y, this.spriteHeight, this.spriteWidth);
 };
 
+Gem.prototype.update = function (dt) {
+    // to hide gems on random time
+    this.timeToHide -= dt;
+    if (this.timeToHide <= 0) {
+        this.x = -200;
+    }
+}
 
 let player = new Player(202, 570);
 let allEnemies = [];

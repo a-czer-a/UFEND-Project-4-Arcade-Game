@@ -83,7 +83,6 @@
          updateEntities(dt);
          checkCollisions();
          collectGems();
-         //         waitToRemoveGems();
          collectExtraGems();
          addExtraGems();
          checkWinningCondition();
@@ -126,7 +125,6 @@
                      } else {
                          new Audio('audio/Collect_Point_00.mp3').play();
                          player.score += gems[i].value;
-                         //player.score(gems[i].value)
                          updateScoreOnBoard();
                          extraGems[i].x = -200;
                      }
@@ -136,10 +134,11 @@
      }
 
      function addExtraGems() {
+         const heart = new Gem('images/Heart.png', 0);
+         const blueGem = new Gem('images/gem-blue.png', 150);
+         const selectorStar = new Gem('images/selector.png', 300);
          if (player.lifes === 1 && extraGems.length === 0) {
-             const heart = new Gem('images/Heart.png', 0);
-             const blueGem = new Gem('images/gem-blue.png', 150);
-             extraGems.push(heart, blueGem);
+             extraGems.push(heart, blueGem, selectorStar);
          }
      }
 
@@ -175,7 +174,13 @@
          allEnemies.forEach(function (enemy) {
              enemy.update(dt);
          });
-         //         player.update();     
+         gems.forEach(function (gem) {
+             gem.update(dt);
+         });
+         extraGems.forEach(function (extraGem) {
+             extraGem.update(dt);
+         });
+         player.update();
      }
 
      /* This function initially draws the "game level", it will then call
@@ -234,15 +239,12 @@
          allEnemies.forEach(function (enemy) {
              enemy.render();
          });
-
          gems.forEach(function (gem) {
              gem.render();
          });
-
          extraGems.forEach(function (extraGem) {
              extraGem.render();
          });
-
          player.render();
      }
 
@@ -269,6 +271,7 @@
         'images/gem-blue.png',
         'images/Star.png',
         'images/Heart.png',
+         'images/selector.png',
     ]);
 
      Resources.onReady(init);
