@@ -19,6 +19,16 @@ button {
     text-transform: uppercase;
 }
 
+button:hover,
+button:focus,
+button:active {
+    opacity: 0.8;
+    outline: none;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14),
+    0 3px 1px -2px rgba(0, 0, 0, .2),
+    0 1px 5px 0 rgba(0, 0, 0, .12);
+}
+
 .board {
     width: 450px;
     margin: 0 auto;
@@ -60,7 +70,8 @@ button {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(40, 40, 40, 0.9);
+    padding: 30px;
+    background-color: rgba(20, 20, 20, 0.9);
     color: #000;
     text-align: center;
 }
@@ -68,24 +79,57 @@ button {
 .modal-content {
     margin: 10% auto;
     padding: 30px;
-    width: 70%;
+    width: 80%;
     font-size: 1.3em;
     background-color: #eee;
     border-radius: 6px;
     border: 1px solid #000;
-    -webkit-box-shadow: 7px 7px 15px 0 rgba(0, 0, 0, 0.3), 0 7px 25px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: 7px 7px 15px 0 rgba(0, 0, 0, 0.3), 0 7px 25px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 7px 7px 15px 0 rgba(0, 0, 0, 0.3),
+    0 7px 25px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 7px 7px 15px 0 rgba(0, 0, 0, 0.3),
+    0 7px 25px 0 rgba(0, 0, 0, 0.2);
 }
 
 .modal-content h3 {
     font-family: 'Press Start 2P', cursive;
 }
 
-.new-game-btn {
-    margin-bottom: 20px;
+.bug-wrapper {
+    width: 100%;
+    height: 80px;
+    margin: 10px auto 30px;
 }
+
+.bug {
+    position: absolute;
+    -webkit-animation: linear infinite alternate;
+    -webkit-animation-name: move;
+    -webkit-animation-duration: 4s;
+}
+
+
+@-webkit-keyframes move {
+    0% {
+        left: 20%;
+    }
+    50% {
+        left: 75%;
+    }
+    100% {
+        left: 20%;
+    }
+}
+
+.new-game-btn {
+    height: 40px;
+    margin-bottom: 2em;
+    font-size: 1em;
+    font-family: 'Saira Extra Condensed', sans-serif;
+}
+
 
 .modal h3 {
     text-transform: uppercase;
-    font-size: 2.2em;
+    font-size: 2.5em;
+    margin-bottom: 0;
 }

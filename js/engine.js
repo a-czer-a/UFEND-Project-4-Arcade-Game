@@ -102,8 +102,8 @@
 
      function collectGems() {
          for (let i = 0; i < gems.length; i++) {
-             if (player.y === gems[i].y) {
-                 if (gems[i].x === player.x) {
+             if (player.y === gems[i].y - 40) {
+                 if (player.x === gems[i].x - 18) {
                      player.score += gems[i].value;
                      updateScoreOnBoard();
                      new Audio('audio/Collect_Point_00.mp3').play();
@@ -115,12 +115,12 @@
 
      function collectExtraGems() {
          for (let i = 0; i < extraGems.length; i++) {
-             if (player.y === extraGems[i].y) {
-                 if (extraGems[i].x === player.x) {
+             if (player.y === extraGems[i].y - 40) {
+                 if (player.x === extraGems[i].x - 18) {
                      if (extraGems[i].sprite === 'images/Heart.png') {
                          addHeartToBoard();
-                         player.lifes += 1;
-                         //player.life();
+                         //                         player.lifes += 1;
+                         player.addLife();
                          new Audio('audio/Pickup_02.mp3').play();
                          extraGems[i].x = -200;
                      } else {

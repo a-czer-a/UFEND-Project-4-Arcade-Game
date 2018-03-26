@@ -41,6 +41,10 @@ Player.prototype.resetPosition = function () {
     this.y = 390;
 }
 
+Player.prototype.addLife = function () {
+    this.lifes++;
+}
+
 Player.prototype.takeLife = function () {
     if (this.lifes > 0) {
         this.lifes--;
@@ -81,16 +85,21 @@ Player.prototype.handleInput = function (key) {
 
 const Gem = function (sprite, value) {
     // X positions: 0, 101, 202, 303, 404
-    this.x = (101 * Math.floor(Math.random() * 4) + 0);
+    //     this.x = (101 * Math.floor(Math.random() * 4) + 0);
+    this.x = ((51 - 33) + (101 * Math.floor(Math.random() * 4) + 0));
     // Y positions: 58, 141, 224
-    this.y = (58 + (83 * Math.floor(Math.random() * 3) + 0));
+    // this.y = (58 + (83 * Math.floor(Math.random() * 3) + 0));
+    this.y = ((83 + 70 - 55) + (83 * Math.floor(Math.random() * 3) + 0));
     this.sprite = sprite;
     this.value = value;
+    this.spriteHeight = 66;
+    this.spriteWidth = 111;
 }
 
 Gem.prototype.render = function () {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y, this.spriteHeight, this.spriteWidth);
 };
+
 
 let player = new Player(202, 570);
 let allEnemies = [];
@@ -104,14 +113,12 @@ function createGameEntities() {
     const bug4 = new Enemy(-350, 141, 140);
     const bug5 = new Enemy(-200, 224, 250);
     const bug6 = new Enemy(-200, 58, 90);
-    const bug7 = new Enemy(-300, 141, 120);
-    const bug8 = new Enemy(-50, 58, 140);
 
     allEnemies.splice(0);
     allEnemies.push(bug1, bug2, bug3, bug4, bug5, bug6);
 
-    const orangeGem = new Gem('images/gem-orange.png', 100);
-    const greenGem = new Gem('images/gem-green.png', 150);
+    const orangeGem = new Gem('images/gem-orange.png', 50);
+    const greenGem = new Gem('images/gem-green.png', 100);
     const starGem = new Gem('images/Star.png', 200);
 
     gems.splice(0);
@@ -173,6 +180,12 @@ function showGameOverModal() {
     new Audio('audio/Jingle_Lose_01.mp3').play();
     const modal = document.getElementById('popup-window');
     modal.style.display = 'block';
+    displayScoreAfterGameOver();
+}
+
+
+function displayScoreAfterGameOver() {
+    document.getElementById('total-score').innerHTML = `${player.score}`;
 }
 
 function initializeGame() {
