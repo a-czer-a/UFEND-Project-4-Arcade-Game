@@ -5,6 +5,13 @@ body {
 
 /* BOARD */
 
+.fa {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #555;
+}
+
 h1 {
     font-size: 2em;
 }

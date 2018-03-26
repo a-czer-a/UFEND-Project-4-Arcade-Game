@@ -83,6 +83,7 @@
          updateEntities(dt);
          checkCollisions();
          collectGems();
+         //         waitToRemoveGems();
          collectExtraGems();
          addExtraGems();
          checkWinningCondition();
@@ -119,7 +120,6 @@
                  if (player.x === extraGems[i].x - 18) {
                      if (extraGems[i].sprite === 'images/Heart.png') {
                          addHeartToBoard();
-                         //                         player.lifes += 1;
                          player.addLife();
                          new Audio('audio/Pickup_02.mp3').play();
                          extraGems[i].x = -200;
@@ -142,6 +142,7 @@
              extraGems.push(heart, blueGem);
          }
      }
+
 
      function checkWinningCondition() {
          if (player.y < 58 && !reachedWater) {

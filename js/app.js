@@ -125,16 +125,15 @@ function createGameEntities() {
     gems.push(orangeGem, greenGem, starGem);
 
     player = new Player(202, 390);
+    addEventListenersToCanvas();
 }
 
 
 function setupEventListeners() {
     const startGame = document.getElementById('start-game-btn');
     startGame.addEventListener('click', createGameEntities);
-    addEventListenersToCanvas();
     const newGame = document.getElementById('reload-game-btn');
     newGame.addEventListener('click', reloadGame);
-    addEventListenersToCanvas();
 }
 
 
