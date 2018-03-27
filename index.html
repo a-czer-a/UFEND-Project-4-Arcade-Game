@@ -27,12 +27,21 @@
 
         <div id="popup-window" class="modal">
             <div class="modal-content">
-                <h3>Game over</h3>
+                <h3 class="game-over-title">Game over</h3>
                 <div class="bug-wrapper">
                     <img class="bug" src="images/enemy-bug-small.png" alt="enemy-bug">
                 </div>
                 <p>You earned <span id="total-score"></span> points!</p>
                 <button id="reload-game-btn" class="new-game-btn">Try again</button>
+            </div>
+        </div>
+
+        <div id="popup-window-for-winning" class="modal modal-for-winner">
+            <div class="modal-content">
+                <h3 class="winning-title">Congratulations, <span class="color">you won</span>!</h3>
+                <img class="gold-medal" src="images/gold-medal-color.png" alt="gold-medal">
+                <p>You reached water with at least 600 points.</p>
+                <button id="reload-game-after-win-btn" class="new-game-btn win-btn">Try again</button>
             </div>
         </div>
     </header>

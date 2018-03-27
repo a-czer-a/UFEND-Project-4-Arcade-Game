@@ -85,7 +85,7 @@
          collectGems();
          collectExtraGems();
          addExtraGems();
-         checkWinningCondition();
+         checkReachingWaterCondition();
      }
 
      //     function checkCollisions() {
@@ -147,7 +147,7 @@
      //         }
      //     }
 
-     function checkWinningCondition() {
+     function checkReachingWaterCondition() {
          if (player.y < 58 && !reachedWater) {
              reachedWater = true;
              setTimeout(addPointsAndResetPosition, 400);

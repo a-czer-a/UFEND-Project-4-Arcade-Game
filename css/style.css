@@ -114,6 +114,19 @@ button:active {
     -webkit-animation-duration: 4s;
 }
 
+.winner {
+    font-family: inherit;
+}
+
+.color {
+    color: #666;
+}
+
+.gold-medal-color {
+    width: 100px;
+}
+
+
 
 @-webkit-keyframes move {
     0% {
@@ -134,9 +147,19 @@ button:active {
     font-family: 'Saira Extra Condensed', sans-serif;
 }
 
+.win-btn {
+    color: #444;
+    background-color: #fff;
+    border: 1px solid #666;
+}
 
-.modal h3 {
+.modal .game-over-title {
     text-transform: uppercase;
     font-size: 2.5em;
     margin-bottom: 0;
+}
+
+.modal .winning-title {
+    font-family: 'Saira Extra Condensed', sans-serif;
+    font-size: 2.2em;
 }

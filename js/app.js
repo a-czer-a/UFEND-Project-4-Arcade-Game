@@ -31,6 +31,7 @@ const Player = function (x, y) {
 Player.prototype.update = function () {
     //    this.x += (this.speed * dt);
     this.checkCollision();
+    this.winGame();
 };
 
 Player.prototype.resetPosition = function () {
@@ -64,6 +65,12 @@ Player.prototype.takeLife = function () {
         deleteHeartFromBoard();
     } else {
         this.finishGame();
+    }
+};
+
+Player.prototype.winGame = function () {
+    if (player.x > 58 && player.score >= 600) {
+        showWinGameModal();
     }
 };
 
@@ -135,7 +142,8 @@ Gem.prototype.removeFromCanvas = function () {
 };
 
 
-// 
+// -------------------------------------
+
 let player = new Player(202, 570);
 let allEnemies = [];
 let gems = [];
@@ -148,9 +156,11 @@ function createGameEntities() {
     const bug4 = new Enemy(-350, 141, 140);
     const bug5 = new Enemy(-200, 224, 250);
     const bug6 = new Enemy(-200, 58, 90);
+    const bug7 = new Enemy(-400, 58, 100);
+
 
     allEnemies.splice(0);
-    allEnemies.push(bug1, bug2, bug3, bug4, bug5, bug6);
+    allEnemies.push(bug1, bug2, bug3, bug4, bug5, bug6, bug7);
 
     const orangeGem = new Gem('images/gem-orange.png', 50);
     const greenGem = new Gem('images/gem-green.png', 100);
@@ -169,6 +179,9 @@ function addExtraGems() {
     const selectorStar = new Gem('images/Star-selector.png', 300);
     if (player.lives === 1 && extraGems.length === 0) {
         extraGems.push(heart, blueGem, selectorStar);
+        allEnemies.forEach(function (enemy) {
+            enemy.speed += 30;
+        })
     }
 }
 
@@ -177,6 +190,8 @@ function setupEventListeners() {
     startGame.addEventListener('click', createGameEntities);
     const newGame = document.getElementById('reload-game-btn');
     newGame.addEventListener('click', reloadGame);
+    const newGameAfterWinning = document.getElementById('reload-game-after-win-btn');
+    newGameAfterWinning.addEventListener('click', reloadGame);
 }
 
 
@@ -222,11 +237,16 @@ function showGameOverModal() {
     new Audio('audio/Jingle_Lose_01.mp3').play();
     const modal = document.getElementById('popup-window');
     modal.style.display = 'block';
-    displayScoreAfterGameOver();
+    displayScoreAfterGame();
+}
+
+function showWinGameModal() {
+    const winModal = document.getElementById('popup-window-for-winning');
+    winModal.style.display = 'block';
 }
 
 
-function displayScoreAfterGameOver() {
+function displayScoreAfterGame() {
     document.getElementById('total-score').innerHTML = `${player.score}`;
 }
 
