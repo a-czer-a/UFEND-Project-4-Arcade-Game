@@ -45,7 +45,6 @@
          for (let i = 0; i < gems.length; i++) {
              if (player.y === gems[i].y - 40) {
                  if (player.x === gems[i].x - 18) {
-                     //                     player.score += gems[i].value;
                      player.updateScore(gems[i].value);
                      updateScoreOnBoard();
                      new Audio('audio/Collect_Point_00.mp3').play();
@@ -66,7 +65,6 @@
                          extraGems[i].removeFromCanvas();
                      } else {
                          new Audio('audio/Collect_Point_00.mp3').play();
-                         //                         player.score += gems[i].value;
                          player.updateScore(gems[i].value);
                          updateScoreOnBoard();
                          extraGems[i].removeFromCanvas();
@@ -84,7 +82,6 @@
      }
 
      function addPointsAndResetPosition() {
-         //         player.score += 50;
          player.updateScore(50);
          new Audio('audio/Collect_Point_00.mp3').play();
          updateScoreOnBoard();

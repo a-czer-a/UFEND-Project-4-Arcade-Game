@@ -25,11 +25,9 @@ const Player = function (x, y) {
     this.lives = 3;
     this.score = 0;
     this.sprite = 'images/char-cat-girl.png';
-    //    this.speed = speed;
 };
 
 Player.prototype.update = function () {
-    //    this.x += (this.speed * dt);
     this.checkCollision();
 };
 
