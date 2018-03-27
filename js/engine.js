@@ -81,33 +81,37 @@
       */
      function update(dt) {
          updateEntities(dt);
-         checkCollisions();
+         //         checkCollisions();
          collectGems();
          collectExtraGems();
          addExtraGems();
          checkWinningCondition();
      }
 
-     function checkCollisions() {
-         for (let i = 0; i < allEnemies.length; i++) {
-             if (player.y === allEnemies[i].y) {
-                 if ((allEnemies[i].x + 30 >= player.x - 20) && (allEnemies[i].x - 30 <= player.x + 20)) {
-                     new Audio('audio/Shoot_01.mp3').play();
-                     player.resetPosition();
-                     player.takeLife();
-                 };
-             }
-         }
-     }
+     //     function checkCollisions() {
+     //         for (let i = 0; i < allEnemies.length; i++) {
+     //             if (player.y === allEnemies[i].y) {
+     //                 if ((allEnemies[i].x + 30 >= player.x - 20) && (allEnemies[i].x - 30 <= player.x + 20)) {
+     //                     new Audio('audio/Shoot_01.mp3').play();
+     //                     player.resetPosition();
+     //                     player.takeLife();
+     //                 };
+     //             }
+     //         }
+     //     }
 
      function collectGems() {
          for (let i = 0; i < gems.length; i++) {
              if (player.y === gems[i].y - 40) {
                  if (player.x === gems[i].x - 18) {
-                     player.score += gems[i].value;
+                     //                     player.score += gems[i].value;
+                     player.updateScore(gems[i].value);
                      updateScoreOnBoard();
                      new Audio('audio/Collect_Point_00.mp3').play();
-                     gems[i].x = -200;
+                     gems[i].removeFromCanvas();
+
+                     //                     if (gems[i].sprite === 'images/Star.png') {
+                     //                         player.speed += 50;                     }
                  }
              }
          }
@@ -121,27 +125,27 @@
                          addHeartToBoard();
                          player.addLife();
                          new Audio('audio/Pickup_02.mp3').play();
-                         extraGems[i].x = -200;
+                         extraGems[i].removeFromCanvas();
                      } else {
                          new Audio('audio/Collect_Point_00.mp3').play();
-                         player.score += gems[i].value;
+                         //                         player.score += gems[i].value;
+                         player.updateScore(gems[i].value);
                          updateScoreOnBoard();
-                         extraGems[i].x = -200;
+                         extraGems[i].removeFromCanvas();
                      }
                  }
              }
          }
      }
 
-     function addExtraGems() {
-         const heart = new Gem('images/Heart.png', 0);
-         const blueGem = new Gem('images/gem-blue.png', 150);
-         const selectorStar = new Gem('images/Star-selector.png', 300);
-         if (player.lifes === 1 && extraGems.length === 0) {
-             extraGems.push(heart, blueGem, selectorStar);
-         }
-     }
-
+     //     function addExtraGems() {
+     //         const heart = new Gem('images/Heart.png', 0);
+     //         const blueGem = new Gem('images/gem-blue.png', 150);
+     //         const selectorStar = new Gem('images/Star-selector.png', 300);
+     //         if (player.lifes === 1 && extraGems.length === 0) {
+     //             extraGems.push(heart, blueGem, selectorStar);
+     //         }
+     //     }
 
      function checkWinningCondition() {
          if (player.y < 58 && !reachedWater) {
@@ -151,7 +155,8 @@
      }
 
      function addPointsAndResetPosition() {
-         player.score += 50;
+         //         player.score += 50;
+         player.updateScore(50);
          new Audio('audio/Collect_Point_00.mp3').play();
          updateScoreOnBoard();
          player.resetPosition();
@@ -271,7 +276,7 @@
         'images/gem-blue.png',
         'images/Star.png',
         'images/Heart.png',
-         'images/Star-selector.png',
+        'images/Star-selector.png',
     ]);
 
      Resources.onReady(init);

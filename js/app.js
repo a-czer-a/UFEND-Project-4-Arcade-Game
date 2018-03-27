@@ -1,4 +1,4 @@
-// Enemies our player must avoid
+// block: Enemy
 const Enemy = function (x, y, speed) {
     this.x = x;
     this.y = y;
@@ -6,13 +6,10 @@ const Enemy = function (x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function (dt) {
     this.x += (this.speed * dt);
 };
 
-// Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
@@ -21,38 +18,62 @@ Enemy.prototype.render = function () {
     }
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// block: PLAYER
 const Player = function (x, y) {
     this.x = x;
     this.y = y;
-    this.lifes = 3;
+    this.lives = 3;
     this.score = 0;
     this.sprite = 'images/char-cat-girl.png';
-}
+    //    this.speed = speed;
+};
 
 Player.prototype.update = function () {
-
+    //    this.x += (this.speed * dt);
+    this.checkCollision();
 };
 
 Player.prototype.resetPosition = function () {
     //    this.x = 202;
     this.y = 390;
-}
+};
+
+Player.prototype.checkCollision = function () {
+    for (let i = 0; i < allEnemies.length; i++) {
+        if (this.y === allEnemies[i].y) {
+            if ((allEnemies[i].x + 30 >= this.x - 20) && (allEnemies[i].x - 30 <= this.x + 20)) {
+                new Audio('audio/Shoot_01.mp3').play();
+                this.resetPosition();
+                this.takeLife();
+            };
+        }
+    }
+};
+
+Player.prototype.updateScore = function (value) {
+    this.score += value;
+};
 
 Player.prototype.addLife = function () {
-    this.lifes++;
-}
+    this.lives++;
+};
 
 Player.prototype.takeLife = function () {
-    if (this.lifes > 0) {
-        this.lifes--;
+    if (this.lives > 0) {
+        this.lives--;
         deleteHeartFromBoard();
     } else {
-        endGame();
+        this.finishGame();
     }
-}
+};
+
+Player.prototype.finishGame = function () {
+    document.removeEventListener('keyup', keyUpEventListener);
+    allEnemies = [];
+    gems = [];
+    extraGems = [];
+    showGameOverModal();
+};
 
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -81,8 +102,10 @@ Player.prototype.handleInput = function (key) {
             };
             break;
     };
-}
+};
 
+
+// block: GEMS
 const Gem = function (sprite, value) {
     // X positions: 0, 101, 202, 303, 404
     this.x = ((51 - 33) + (101 * Math.floor(Math.random() * 4) + 0));
@@ -92,21 +115,27 @@ const Gem = function (sprite, value) {
     this.value = value;
     this.spriteHeight = 66;
     this.spriteWidth = 111;
-    this.timeToHide = Math.round(Math.random() * (10 - 2)) + 2;
-}
+    this.timeToHide = Math.round(Math.random() * (13 - 5)) + 5;
+};
 
 Gem.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y, this.spriteHeight, this.spriteWidth);
 };
 
 Gem.prototype.update = function (dt) {
-    // to hide gems on random time
+    // to hide gems after a random period of time
     this.timeToHide -= dt;
     if (this.timeToHide <= 0) {
         this.x = -200;
     }
-}
+};
 
+Gem.prototype.removeFromCanvas = function () {
+    this.x = -200;;
+};
+
+
+// 
 let player = new Player(202, 570);
 let allEnemies = [];
 let gems = [];
@@ -134,6 +163,14 @@ function createGameEntities() {
     addEventListenersToCanvas();
 }
 
+function addExtraGems() {
+    const heart = new Gem('images/Heart.png', 0);
+    const blueGem = new Gem('images/gem-blue.png', 150);
+    const selectorStar = new Gem('images/Star-selector.png', 300);
+    if (player.lives === 1 && extraGems.length === 0) {
+        extraGems.push(heart, blueGem, selectorStar);
+    }
+}
 
 function setupEventListeners() {
     const startGame = document.getElementById('start-game-btn');
@@ -157,28 +194,28 @@ function addEventListenersToCanvas() {
     document.addEventListener('keyup', keyUpEventListener);
 }
 
-function endGame() {
-    document.removeEventListener('keyup', keyUpEventListener);
-    allEnemies = [];
-    gems = [];
-    extraGems = [];
-    showGameOverModal();
-}
+//function endGame() {
+//    document.removeEventListener('keyup', keyUpEventListener);
+//    allEnemies = [];
+//    gems = [];
+//    extraGems = [];
+//    showGameOverModal();
+//}
 
 function reloadGame() {
     window.location.reload();
 }
 
 function deleteHeartFromBoard() {
-    const lifes = document.getElementById('lifes');
-    lifes.removeChild(lifes.lastElementChild);
+    const lives = document.getElementById('lives');
+    lives.removeChild(lives.lastElementChild);
 }
 
 function addHeartToBoard() {
-    const lifes = document.getElementById('lifes');
+    const lives = document.getElementById('lives');
     const newHeart = document.createElement('img');
     newHeart.setAttribute('src', 'images/Heart.png');
-    lifes.appendChild(newHeart);
+    lives.appendChild(newHeart);
 }
 
 function showGameOverModal() {

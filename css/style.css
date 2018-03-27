@@ -42,17 +42,17 @@ button:active {
     padding: 0;
 }
 
-#lifes,
+#lives,
 #score {
     margin-bottom: -50px;
 }
 
-#lifes {
+#lives {
     display: inline-block;
     float: left;
 }
 
-#lifes img {
+#lives img {
     width: 25px;
 }
 
