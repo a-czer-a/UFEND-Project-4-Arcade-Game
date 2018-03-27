@@ -78,13 +78,13 @@ button:active {
     width: 100%;
     height: 100%;
     padding: 30px;
-    background-color: rgba(20, 20, 20, 0.9);
+    background-color: #000;
     color: #000;
     text-align: center;
 }
 
 .modal-content {
-    margin: 10% auto;
+    margin: 5% auto;
     padding: 30px;
     width: 80%;
     font-size: 1.3em;
@@ -127,7 +127,6 @@ button:active {
 }
 
 
-
 @-webkit-keyframes move {
     0% {
         left: 20%;
@@ -141,16 +140,21 @@ button:active {
 }
 
 .new-game-btn {
-    height: 40px;
     margin-bottom: 2em;
     font-size: 1em;
     font-family: 'Saira Extra Condensed', sans-serif;
 }
 
-.win-btn {
+.win-btn,
+.new-game-btn {
     color: #444;
     background-color: #fff;
     border: 1px solid #666;
+}
+
+.new-game-btn:hover,
+.win-btn:hover {
+    color: #dd452a;
 }
 
 .modal .game-over-title {

@@ -31,11 +31,9 @@ const Player = function (x, y) {
 Player.prototype.update = function () {
     //    this.x += (this.speed * dt);
     this.checkCollision();
-    this.winGame();
 };
 
 Player.prototype.resetPosition = function () {
-    //    this.x = 202;
     this.y = 390;
 };
 
@@ -53,6 +51,7 @@ Player.prototype.checkCollision = function () {
 
 Player.prototype.updateScore = function (value) {
     this.score += value;
+    this.winGame();
 };
 
 Player.prototype.addLife = function () {
@@ -69,8 +68,9 @@ Player.prototype.takeLife = function () {
 };
 
 Player.prototype.winGame = function () {
-    if (player.x > 58 && player.score >= 600) {
+    if (player.x > 58 && player.score >= 700) {
         showWinGameModal();
+        this.finishGame();
     }
 };
 
@@ -135,6 +135,7 @@ Gem.prototype.update = function (dt) {
     if (this.timeToHide <= 0) {
         this.x = -200;
     }
+    addExtraGems();
 };
 
 Gem.prototype.removeFromCanvas = function () {
@@ -164,7 +165,7 @@ function createGameEntities() {
 
     const orangeGem = new Gem('images/gem-orange.png', 50);
     const greenGem = new Gem('images/gem-green.png', 100);
-    const starGem = new Gem('images/Star.png', 200);
+    const starGem = new Gem('images/Star.png', 150);
 
     gems.splice(0);
     gems.push(orangeGem, greenGem, starGem);
@@ -175,9 +176,9 @@ function createGameEntities() {
 
 function addExtraGems() {
     const heart = new Gem('images/Heart.png', 0);
-    const blueGem = new Gem('images/gem-blue.png', 150);
+    const blueGem = new Gem('images/gem-blue.png', 100);
     const selectorStar = new Gem('images/Star-selector.png', 300);
-    if (player.lives === 1 && extraGems.length === 0) {
+    if (player.score >= 350 && extraGems.length === 0) {
         extraGems.push(heart, blueGem, selectorStar);
         allEnemies.forEach(function (enemy) {
             enemy.speed += 30;
@@ -209,14 +210,6 @@ function addEventListenersToCanvas() {
     document.addEventListener('keyup', keyUpEventListener);
 }
 
-//function endGame() {
-//    document.removeEventListener('keyup', keyUpEventListener);
-//    allEnemies = [];
-//    gems = [];
-//    extraGems = [];
-//    showGameOverModal();
-//}
-
 function reloadGame() {
     window.location.reload();
 }
@@ -241,6 +234,7 @@ function showGameOverModal() {
 }
 
 function showWinGameModal() {
+    new Audio('audio/Jingle_Achievement.mp3').play()
     const winModal = document.getElementById('popup-window-for-winning');
     winModal.style.display = 'block';
 }
