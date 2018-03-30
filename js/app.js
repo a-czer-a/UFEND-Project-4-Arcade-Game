@@ -223,6 +223,7 @@ function removeEventListenersFromCanvas() {
 
 
 function startGame() {
+    hideOverlay();
     hideModal('popup-window-with-instructions');
     createGameEntities();
 }
@@ -261,7 +262,6 @@ function updateScoreOnBoard() {
     score.innerHTML = `Score: ${player.score}`;
 }
 
-
 function deleteHeartFromBoard() {
     const lives = document.getElementById('lives');
     lives.removeChild(lives.lastElementChild);
@@ -271,7 +271,6 @@ function clearHeartsAfterPreviousGame() {
     const lives = document.getElementById('lives');
     lives.innerHTML = "";
 }
-
 
 function addHeartToBoard(num) {
     const lives = document.getElementById('lives');
@@ -302,9 +301,9 @@ function showInstructionModal() {
     instructions.style.top = document.body.scrollTop;
 }
 
-//function hideModal() {
-//    document.getElementById('popup-window-with-instructions').style.display = 'none';
-//}
+function hideOverlay() {
+    document.getElementById('overlay').style.display = 'none';
+}
 
 function hideModal(modalId) {
     document.getElementById(modalId).style.display = 'none';

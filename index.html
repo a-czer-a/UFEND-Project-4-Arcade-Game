@@ -11,6 +11,28 @@
 </head>
 
 <body onload="initializeGame()">
+    <!--       ONLOAD MODAL WITH INSTRUCTIONS -->
+    <div id="popup-window-with-instructions" class="modal instructions-bg priority">
+        <div class="modal-content">
+            <h3 class="normal-title color-title">The Classic Arcade Game</h3>
+            <div class="rules">
+                <ul>
+                    <li>To win the game the player has to reach the water with at least <strong>700 points</strong>.</li>
+                    <li>To move the player use arrow keys.</li>
+                    <li>The player has 3 lives and looses one after collision with a bug enemy.</li>
+                    <li>The player gets 50 points every time he reaches the water.</li>
+                    <li>The player can collect gems of a different value and earn extra points.</li>
+                    <li>An extra life can be collected during a game.</li>
+                </ul>
+
+            </div>
+            <button id="start-game-btn" class="new-game-btn">Start game</button>
+        </div>
+    </div>
+
+    <!--   OVERLAY TO HIDE LOADING PAGE CONTENT-->
+    <div id="overlay" class="overlay"></div>
+
     <header>
         <!--       BOARD -->
         <i class="fa fa-volume-up" aria-hidden="true"></i>
@@ -23,25 +45,6 @@
                     <img src="images/Heart.png" alt="heart">
                 </div>
                 <p id="score">Score: 0</p>
-            </div>
-        </div>
-
-        <!--       ONLOAD MODAL WITH INSTRUCTIONS -->
-        <div id="popup-window-with-instructions" class="modal instructions-bg">
-            <div class="modal-content">
-                <h3 class="normal-title color-title">The Classic Arcade Game</h3>
-                <div class="rules">
-                    <ul>
-                        <li>To win the game the player has to reach the water with at least <strong>700 points</strong>.</li>
-                        <li>To move the player use arrow keys.</li>
-                        <li>The player has 3 lives and looses one after collision with a bug enemy.</li>
-                        <li>The player gets 50 points every time he reaches the water.</li>
-                        <li>The player can collect gems of a different value and earn extra points.</li>
-                        <li>An extra life can be collected during a game.</li>
-                    </ul>
-
-                </div>
-                <button id="start-game-btn" class="new-game-btn">Start game</button>
             </div>
         </div>
 

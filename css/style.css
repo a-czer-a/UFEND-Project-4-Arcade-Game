@@ -67,6 +67,20 @@ button:active {
     clear: both;
 }
 
+/* OVERLAY */
+
+.overlay {
+    display: block;
+    z-index: 100;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    /*    transition: 1s 0.4s;*/
+}
+
 /* MODALS */
 
 .modal {
@@ -88,7 +102,7 @@ button:active {
 }
 
 .finish-game-bg {
-    background-color: rgba(10, 10, 10, 0.75);
+    background-color: rgba(10, 10, 10, 0.8);
 }
 
 
@@ -188,6 +202,10 @@ button:active {
 
 .modal .rules {
     margin-bottom: 50px;
+}
+
+.priority {
+    z-index: 200;
 }
 
 .dependencies {
