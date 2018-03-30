@@ -10,11 +10,12 @@
     <script src="https://use.fontawesome.com/f0cb29eb07.js"></script>
 </head>
 
-<body>
+<body onload="initializeGame()">
     <header>
+        <!--       BOARD -->
         <i class="fa fa-volume-up" aria-hidden="true"></i>
         <div class="container">
-            <button id="start-game-btn">Start game</button>
+            <!--            <button id="start-game-btn">Start game</button>-->
             <div class="board">
                 <div id="lives">
                     <img src="images/Heart.png" alt="heart">
@@ -25,7 +26,27 @@
             </div>
         </div>
 
-        <div id="popup-window" class="modal">
+        <!--       ONLOAD MODAL WITH INSTRUCTIONS -->
+        <div id="popup-window-with-instructions" class="modal instructions-bg">
+            <div class="modal-content">
+                <h3 class="normal-title color-title">The Classic Arcade Game</h3>
+                <div class="rules">
+                    <ul>
+                        <li>To win the game the player has to reach the water with at least <strong>700 points</strong>.</li>
+                        <li>To move the player use arrow keys.</li>
+                        <li>The player has 3 lives and looses one after collision with a bug enemy.</li>
+                        <li>The player gets 50 points every time he reaches the water.</li>
+                        <li>The player can collect gems of a different value and earn extra points.</li>
+                        <li>An extra life can be collected during a game.</li>
+                    </ul>
+
+                </div>
+                <button id="start-game-btn" class="new-game-btn">Start game</button>
+            </div>
+        </div>
+
+        <!--       GAME OVER MODAL -->
+        <div id="popup-window" class="modal finish-game-bg">
             <div class="modal-content">
                 <h3 class="game-over-title">Game over</h3>
                 <div class="bug-wrapper">
@@ -36,12 +57,16 @@
             </div>
         </div>
 
-        <div id="popup-window-for-winning" class="modal modal-for-winner">
+        <!--       CONGRATULATIONS MODAL -->
+        <div id="popup-window-for-winning" class="modal finish-game-bg">
             <div class="modal-content">
-                <h3 class="winning-title">Congratulations, <span class="color">you won</span>!</h3>
+                <h3 class="normal-title">Congratulations, <span class="color">you won</span>!</h3>
                 <img class="gold-medal" src="images/gold-medal-color.png" alt="gold-medal">
                 <p>You reached the water with at least 700 points.</p>
                 <button id="reload-game-after-win-btn" class="new-game-btn win-btn">Play again</button>
+            </div>
+            <div class="dependencies">
+                Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
             </div>
         </div>
     </header>

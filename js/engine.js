@@ -89,9 +89,9 @@
          reachedWater = false;
      }
 
-     function updateScoreOnBoard() {
-         score.innerHTML = `Score: ${player.score}`;
-     }
+     //    function updateScoreOnBoard() {
+     //         score.innerHTML = `Score: ${player.score}`;
+     //     }
 
 
      function updateEntities(dt) {

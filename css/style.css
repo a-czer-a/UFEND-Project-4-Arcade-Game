@@ -38,7 +38,7 @@ button:active {
 
 .board {
     width: 450px;
-    margin: 0 auto;
+    margin: 50px auto;
     padding: 0;
 }
 
@@ -67,7 +67,7 @@ button:active {
     clear: both;
 }
 
-/* MODAL */
+/* MODALS */
 
 .modal {
     display: none;
@@ -78,17 +78,26 @@ button:active {
     width: 100%;
     height: 100%;
     padding: 30px;
-    background-color: #000;
     color: #000;
     text-align: center;
 }
 
+
+.instructions-bg {
+    background-image: url(../images/The%20Blue%20Lagoon.jpg);
+}
+
+.finish-game-bg {
+    background-color: rgba(10, 10, 10, 0.75);
+}
+
+
 .modal-content {
     margin: 5% auto;
     padding: 30px;
-    width: 80%;
+    width: 70%;
     font-size: 1.3em;
-    background-color: #eee;
+    background-color: #fff;
     border-radius: 6px;
     border: 1px solid #000;
     -webkit-box-shadow: 7px 7px 15px 0 rgba(0, 0, 0, 0.3),
@@ -163,7 +172,34 @@ button:active {
     margin-bottom: 0;
 }
 
-.modal .winning-title {
+.modal .normal-title {
     font-family: 'Saira Extra Condensed', sans-serif;
     font-size: 2.2em;
+}
+
+.modal .color-title {
+    /*    color: #29789c;*/
+    color: #243f66;
+}
+
+.modal ul {
+    list-style: none;
+}
+
+.modal .rules {
+    margin-bottom: 50px;
+}
+
+.dependencies {
+    position: absolute;
+    height: 120px;
+    bottom: 0;
+    font-size: 1em;
+    color: #666;
+    z-index: 10;
+}
+
+.dependencies a {
+    color: #777;
+    text-decoration: none;
 }

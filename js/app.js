@@ -28,21 +28,30 @@ const Player = function (x, y) {
 };
 
 Player.prototype.update = function () {
-    this.checkCollision();
+    this.checkCollisions();
 };
 
 Player.prototype.resetPosition = function () {
     this.y = 390;
 };
 
-Player.prototype.checkCollision = function () {
+Player.prototype.checkCollisions = function () {
     for (let i = 0; i < allEnemies.length; i++) {
-        if (this.y === allEnemies[i].y) {
-            if ((allEnemies[i].x + 30 >= this.x - 20) && (allEnemies[i].x - 30 <= this.x + 20)) {
-                new Audio('audio/Shoot_01.mp3').play();
-                this.resetPosition();
-                this.takeLife();
-            };
+        let enemy = allEnemies[i];
+        if (this.collisionBetween(player, enemy)) {
+            new Audio('audio/Shoot_01.mp3').play();
+            this.resetPosition();
+            this.takeLife();
+        };
+    }
+};
+
+Player.prototype.collisionBetween = function (player, enemy) {
+    if (this.y === enemy.y) {
+        if ((enemy.x + 30 >= this.x - 20) && (enemy.x - 30 <= this.x + 20)) {
+            return true;
+        } else {
+            return false;
         }
     }
 };
@@ -61,24 +70,22 @@ Player.prototype.takeLife = function () {
         this.lives--;
         deleteHeartFromBoard();
     } else {
-        this.finishGame();
+        this.looseGame();
     }
 };
 
 Player.prototype.winGame = function () {
     if (player.x > 58 && player.score >= 700) {
         showWinGameModal();
-        this.finishGame();
+        removeEventListenersFromCanvas();
     }
 };
 
-Player.prototype.finishGame = function () {
-    document.removeEventListener('keyup', keyUpEventListener);
-    allEnemies = [];
-    gems = [];
-    extraGems = [];
+Player.prototype.looseGame = function () {
     showGameOverModal();
+    removeEventListenersFromCanvas();
 };
+
 
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -185,14 +192,13 @@ function addExtraGems() {
 }
 
 function setupEventListeners() {
-    const startGame = document.getElementById('start-game-btn');
-    startGame.addEventListener('click', createGameEntities);
-    const newGame = document.getElementById('reload-game-btn');
-    newGame.addEventListener('click', reloadGame);
-    const newGameAfterWinning = document.getElementById('reload-game-after-win-btn');
-    newGameAfterWinning.addEventListener('click', reloadGame);
+    const startGameButton = document.getElementById('start-game-btn');
+    startGameButton.addEventListener('click', startGame);
+    const newGameButton = document.getElementById('reload-game-btn');
+    newGameButton.addEventListener('click', reloadGameAfterGameOver);
+    const newGameAfterWinningButton = document.getElementById('reload-game-after-win-btn');
+    newGameAfterWinningButton.addEventListener('click', reloadGameAfterWinning);
 }
-
 
 const keyUpEventListener = function (e) {
     const allowedKeys = {
@@ -208,16 +214,66 @@ function addEventListenersToCanvas() {
     document.addEventListener('keyup', keyUpEventListener);
 }
 
-function reloadGame() {
-    window.location.reload();
+function removeEventListenersFromCanvas() {
+    document.removeEventListener('keyup', keyUpEventListener);
+    //    allEnemies = [];
+    //    gems = [];
+    //    extraGems = [];
 }
+
+
+function startGame() {
+    hideModal('popup-window-with-instructions');
+    createGameEntities();
+}
+
+function reloadGameAfterGameOver() {
+    hideModal('popup-window');
+    resetGame();
+    createGameEntities();
+
+    //    window.location.reload();
+}
+
+function reloadGameAfterWinning() {
+    hideModal('popup-window-for-winning');
+    resetGame();
+    createGameEntities();
+}
+
+function resetGame() {
+    player.lives = 3;
+    player.score = 0;
+    updateScoreOnBoard();
+    allEnemies = [];
+    allEnemies.forEach(function (enemy) {
+        enemy.speed -= 30;
+    });
+    gems = [];
+    extraGems = [];
+    clearHeartsAfterPreviousGame();
+    addHeartToBoard();
+    addHeartToBoard();
+    addHeartToBoard();
+}
+
+function updateScoreOnBoard() {
+    score.innerHTML = `Score: ${player.score}`;
+}
+
 
 function deleteHeartFromBoard() {
     const lives = document.getElementById('lives');
     lives.removeChild(lives.lastElementChild);
 }
 
-function addHeartToBoard() {
+function clearHeartsAfterPreviousGame() {
+    const lives = document.getElementById('lives');
+    lives.innerHTML = "";
+}
+
+
+function addHeartToBoard(num) {
     const lives = document.getElementById('lives');
     const newHeart = document.createElement('img');
     newHeart.setAttribute('src', 'images/Heart.png');
@@ -237,13 +293,28 @@ function showWinGameModal() {
     winModal.style.display = 'block';
 }
 
+function showInstructionModal() {
+    const instructions = document.getElementById('popup-window-with-instructions');
+    window.onscroll = function () {
+        instructions.style.top = document.body.scrollTop;
+    };
+    instructions.style.display = 'block';
+    instructions.style.top = document.body.scrollTop;
+}
+
+//function hideModal() {
+//    document.getElementById('popup-window-with-instructions').style.display = 'none';
+//}
+
+function hideModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
 
 function displayScoreAfterGame() {
     document.getElementById('total-score').innerHTML = `${player.score}`;
 }
 
 function initializeGame() {
-    setupEventListeners();
+    setupEventListeners()
+    showInstructionModal();
 }
-
-initializeGame();
