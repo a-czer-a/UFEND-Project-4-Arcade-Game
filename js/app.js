@@ -216,11 +216,7 @@ function addEventListenersToCanvas() {
 
 function removeEventListenersFromCanvas() {
     document.removeEventListener('keyup', keyUpEventListener);
-    //    allEnemies = [];
-    //    gems = [];
-    //    extraGems = [];
 }
-
 
 function startGame() {
     hideOverlay();
@@ -232,8 +228,6 @@ function reloadGameAfterGameOver() {
     hideModal('popup-window');
     resetGame();
     createGameEntities();
-
-    //    window.location.reload();
 }
 
 function reloadGameAfterWinning() {

@@ -16,25 +16,6 @@ h1 {
     font-size: 2em;
 }
 
-button {
-    width: 120px;
-    height: 35px;
-    border-radius: 4px;
-    background-color: #81c784;
-    font-size: 0.7em;
-    font-weight: 500;
-    text-transform: uppercase;
-}
-
-button:hover,
-button:focus,
-button:active {
-    opacity: 0.8;
-    outline: none;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14),
-    0 3px 1px -2px rgba(0, 0, 0, .2),
-    0 1px 5px 0 rgba(0, 0, 0, .12);
-}
 
 .board {
     width: 450px;
@@ -102,7 +83,7 @@ button:active {
 }
 
 .finish-game-bg {
-    background-color: rgba(10, 10, 10, 0.8);
+    background-color: rgba(10, 10, 10, 0.9);
 }
 
 
@@ -162,10 +143,20 @@ button:active {
     }
 }
 
+button {
+    width: 120px;
+    height: 35px;
+    border-radius: 4px;
+    background-color: #81c784;
+    font-size: 0.7em;
+    font-family: 'Saira Extra Condensed', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
 .new-game-btn {
     margin-bottom: 2em;
     font-size: 1em;
-    font-family: 'Saira Extra Condensed', sans-serif;
 }
 
 .win-btn,
@@ -176,8 +167,16 @@ button:active {
 }
 
 .new-game-btn:hover,
-.win-btn:hover {
-    color: #dd452a;
+.win-btn:hover,
+.new-game-btn:active,
+.win-btn:active,
+.new-game-btn:focus,
+.win-btn:focus {
+    background-color: #f7fcfb;
+    outline: none;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14),
+    0 3px 1px -2px rgba(0, 0, 0, .2),
+    0 1px 5px 0 rgba(0, 0, 0, .12);
 }
 
 .modal .game-over-title {
@@ -209,8 +208,9 @@ button:active {
 }
 
 .dependencies {
+    margin-top: 10px;
     position: absolute;
-    height: 120px;
+    height: 100px;
     bottom: 0;
     font-size: 1em;
     color: #666;
@@ -218,6 +218,7 @@ button:active {
 }
 
 .dependencies a {
+    margin: 0 auto;
     color: #777;
     text-decoration: none;
 }
