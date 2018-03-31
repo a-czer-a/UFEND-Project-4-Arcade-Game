@@ -75,7 +75,7 @@ Player.prototype.takeLife = function () {
 };
 
 Player.prototype.winGame = function () {
-    if (player.x > 58 && player.score >= 700) {
+    if (player.x > 58 && player.score > 699) {
         showWinGameModal();
         removeEventListenersFromCanvas();
     }
