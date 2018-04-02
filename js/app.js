@@ -1,4 +1,4 @@
-// block: Enemy
+// block: ENEMY
 const Enemy = function (x, y, speed) {
     this.x = x;
     this.y = y;
@@ -70,7 +70,7 @@ Player.prototype.takeLife = function () {
         this.lives--;
         deleteHeartFromBoard();
     } else {
-        this.looseGame();
+        this.loseGame();
     }
 };
 
@@ -81,7 +81,7 @@ Player.prototype.winGame = function () {
     }
 };
 
-Player.prototype.looseGame = function () {
+Player.prototype.loseGame = function () {
     showGameOverModal();
     removeEventListenersFromCanvas();
 };
@@ -135,12 +135,15 @@ Gem.prototype.render = function () {
 };
 
 Gem.prototype.update = function (dt) {
-    // to hide gems after a random period of time
+    this.hideGemIfNotCollectedInTime(dt);
+    addExtraGems();
+};
+
+Gem.prototype.hideGemIfNotCollectedInTime = function (dt) {
     this.timeToHide -= dt;
     if (this.timeToHide <= 0) {
         this.x = -200;
     }
-    addExtraGems();
 };
 
 Gem.prototype.removeFromCanvas = function () {
@@ -148,7 +151,7 @@ Gem.prototype.removeFromCanvas = function () {
 };
 
 
-// -------------------------------------
+// Block: CREATING ENTITIES
 
 let player = new Player(202, 570);
 let allEnemies = [];
@@ -191,6 +194,7 @@ function addExtraGems() {
     }
 }
 
+// Block: EVENT LISTENERS
 function setupEventListeners() {
     const startGameButton = document.getElementById('start-game-btn');
     startGameButton.addEventListener('click', startGame);
@@ -218,6 +222,7 @@ function removeEventListenersFromCanvas() {
     document.removeEventListener('keyup', keyUpEventListener);
 }
 
+// Block: STARTING, RELOADING & RESETING GAME
 function startGame() {
     hideOverlay();
     hideModal('popup-window-with-instructions');
@@ -247,11 +252,10 @@ function resetGame() {
     gems = [];
     extraGems = [];
     clearHeartsAfterPreviousGame();
-    addHeartToBoard();
-    addHeartToBoard();
-    addHeartToBoard();
+    addHeartToBoard(3);
 }
 
+// Block: CHANGES ON BOARD
 function updateScoreOnBoard() {
     score.innerHTML = `Score: ${player.score}`;
 }
@@ -267,12 +271,19 @@ function clearHeartsAfterPreviousGame() {
 }
 
 function addHeartToBoard(num) {
-    const lives = document.getElementById('lives');
-    const newHeart = document.createElement('img');
-    newHeart.setAttribute('src', 'images/Heart.png');
-    lives.appendChild(newHeart);
+    while (num-- > 0) {
+        const lives = document.getElementById('lives');
+        const newHeart = document.createElement('img');
+        newHeart.setAttribute('src', 'images/Heart.png');
+        lives.appendChild(newHeart);
+    }
 }
 
+function displayScoreAfterGame() {
+    document.getElementById('total-score').innerHTML = `${player.score}`;
+}
+
+// Block: MODALS
 function showGameOverModal() {
     new Audio('audio/Jingle_Lose_01.mp3').play();
     const modal = document.getElementById('popup-window');
@@ -303,10 +314,8 @@ function hideModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
 
-function displayScoreAfterGame() {
-    document.getElementById('total-score').innerHTML = `${player.score}`;
-}
 
+// INITIALIZING GAME
 function initializeGame() {
     setupEventListeners()
     showInstructionModal();

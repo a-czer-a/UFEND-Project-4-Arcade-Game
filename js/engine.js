@@ -5,6 +5,10 @@
   */
 
  var Engine = (function (global) {
+     /* Predefine the variables we'll be using within this scope,
+      * create the canvas element, grab the 2D context for that canvas
+      * set the canvas elements height/width and add it to the DOM 
+      */
      var doc = global.document,
          win = global.window,
          canvas = doc.createElement('canvas'),
@@ -16,18 +20,25 @@
      canvas.height = 606;
      doc.body.appendChild(canvas);
 
+
+     /* Kickoff point for the game loop itself
+      * that  handles properly calling the update and render methods 
+      */
      function main() {
+         // Get time delta information required for smooth animation
          var now = Date.now(),
              dt = (now - lastTime) / 1000.0;
 
          update(dt);
          render();
 
+         // Set the lastTime variable which is used to determine the time delta for the next time this function is called
          lastTime = now;
 
          win.requestAnimationFrame(main);
      }
 
+     // Initial setup that should only occur once
      function init() {
          reset();
          lastTime = Date.now();
@@ -59,7 +70,7 @@
              if (player.y === extraGems[i].y - 40) {
                  if (player.x === extraGems[i].x - 18) {
                      if (extraGems[i].sprite === 'images/Heart.png') {
-                         addHeartToBoard();
+                         addHeartToBoard(1);
                          player.addLife();
                          new Audio('audio/Pickup_02.mp3').play();
                          extraGems[i].removeFromCanvas();
@@ -89,11 +100,6 @@
          reachedWater = false;
      }
 
-     //    function updateScoreOnBoard() {
-     //         score.innerHTML = `Score: ${player.score}`;
-     //     }
-
-
      function updateEntities(dt) {
          allEnemies.forEach(function (enemy) {
              enemy.update(dt);
@@ -106,7 +112,6 @@
          });
          player.update();
      }
-
 
      function render() {
          var rowImages = [
@@ -164,6 +169,7 @@
         'images/Star-selector.png',
     ]);
 
+     // Assign the canvas' context object to the global variable (the window object when run in a browser)
      Resources.onReady(init);
      global.ctx = ctx;
 

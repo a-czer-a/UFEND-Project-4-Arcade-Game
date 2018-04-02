@@ -16,7 +16,6 @@ h1 {
     font-size: 2em;
 }
 
-
 .board {
     width: 450px;
     margin: 50px auto;
@@ -94,7 +93,22 @@ h1 {
 }
 
 .modal-content h3 {
+    font-family: 'Saira Extra Condensed', sans-serif;
+}
+
+.modal .game-over-title {
+    text-transform: uppercase;
     font-family: 'Press Start 2P', cursive;
+    font-size: 2.5em;
+    margin-bottom: 0;
+}
+
+.modal .normal-title {
+    font-size: 2.2em;
+}
+
+.modal .color-title {
+    color: #243f66;
 }
 
 .bug-wrapper {
@@ -153,23 +167,8 @@ button {
     0 1px 5px 0 rgba(0, 0, 0, .12);
 }
 
-.modal .game-over-title {
-    text-transform: uppercase;
-    font-size: 2.5em;
-    margin-bottom: 0;
-}
-
-.modal .normal-title {
-    font-family: 'Saira Extra Condensed', sans-serif;
-    font-size: 2.2em;
-}
-
-.modal .color-title {
-    color: #243f66;
-}
-
 .modal p {
-    font-size: 1.3em;
+    font-size: 1.1em;
 }
 
 .modal .rules {
@@ -179,10 +178,6 @@ button {
 .rules ul {
     list-style: none;
     padding: 0;
-}
-
-.modal .rules {
-    margin-bottom: 50px;
 }
 
 .priority {
