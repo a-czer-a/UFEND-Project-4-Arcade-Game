@@ -14,7 +14,9 @@
          canvas = doc.createElement('canvas'),
          ctx = canvas.getContext('2d'),
          lastTime,
-         reachedWater = false;
+         reachedWater = false,
+         hasWon = false;
+
 
      canvas.width = 505;
      canvas.height = 606;
@@ -47,9 +49,23 @@
 
      function update(dt) {
          updateEntities(dt);
+         checkCollisions();
          collectGems();
          collectExtraGems();
          checkReachingWaterCondition();
+         arcade.addExtraGems();
+         winGame();
+     }
+
+     function checkCollisions() {
+         for (let i = 0; i < allEnemies.length; i++) {
+             let enemy = allEnemies[i];
+             if (player.collisionBetween(player, enemy)) {
+                 new Audio('audio/Shoot_01.mp3').play();
+                 player.resetPosition();
+                 handleLives();
+             };
+         }
      }
 
      function collectGems() {
@@ -57,7 +73,7 @@
              if (player.y === gems[i].y - 40) {
                  if (player.x === gems[i].x - 18) {
                      player.updateScore(gems[i].value);
-                     updateScoreOnBoard();
+                     arcade.updateScoreOnBoard();
                      new Audio('audio/Collect_Point_00.mp3').play();
                      gems[i].removeFromCanvas();
                  }
@@ -70,14 +86,14 @@
              if (player.y === extraGems[i].y - 40) {
                  if (player.x === extraGems[i].x - 18) {
                      if (extraGems[i].sprite === 'images/Heart.png') {
-                         addHeartToBoard(1);
+                         arcade.addHeartToBoard(1);
                          player.addLife();
                          new Audio('audio/Pickup_02.mp3').play();
                          extraGems[i].removeFromCanvas();
                      } else {
                          new Audio('audio/Collect_Point_00.mp3').play();
                          player.updateScore(gems[i].value);
-                         updateScoreOnBoard();
+                         arcade.updateScoreOnBoard();
                          extraGems[i].removeFromCanvas();
                      }
                  }
@@ -95,9 +111,31 @@
      function addPointsAndResetPosition() {
          player.updateScore(50);
          new Audio('audio/Collect_Point_00.mp3').play();
-         updateScoreOnBoard();
+         arcade.updateScoreOnBoard();
          player.resetPosition();
          reachedWater = false;
+     }
+
+     function handleLives() {
+         if (player.lives > 0) {
+             player.takeLife();
+             arcade.deleteHeartFromBoard();
+         } else {
+             loseGame();
+         }
+     }
+
+     function winGame() {
+         if (player.x > 58 && player.score > 699) {
+             player.x = -10;
+             arcade.showWinGameModal();
+             removeEventListenersFromCanvas();
+         }
+     }
+
+     function loseGame() {
+         arcade.showGameOverModal();
+         removeEventListenersFromCanvas();
      }
 
      function updateEntities(dt) {
@@ -110,7 +148,6 @@
          extraGems.forEach(function (extraGem) {
              extraGem.update(dt);
          });
-         player.update();
      }
 
      function render() {

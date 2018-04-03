@@ -1,3 +1,6 @@
+const tileWidth = 101;
+const tileHeight = 83;
+
 // block: ENEMY
 const Enemy = function (x, y, speed) {
     this.x = x;
@@ -27,28 +30,13 @@ const Player = function (x, y) {
     this.sprite = 'images/char-cat-girl.png';
 };
 
-Player.prototype.update = function () {
-    this.checkCollisions();
-};
-
 Player.prototype.resetPosition = function () {
     this.y = 390;
 };
 
-Player.prototype.checkCollisions = function () {
-    for (let i = 0; i < allEnemies.length; i++) {
-        let enemy = allEnemies[i];
-        if (this.collisionBetween(player, enemy)) {
-            new Audio('audio/Shoot_01.mp3').play();
-            this.resetPosition();
-            this.takeLife();
-        };
-    }
-};
-
 Player.prototype.collisionBetween = function (player, enemy) {
     if (this.y === enemy.y) {
-        if ((enemy.x + 30 >= this.x - 20) && (enemy.x - 30 <= this.x + 20)) {
+        if ((enemy.x + 30 >= this.x - 25) && (enemy.x - 30 <= this.x + 25)) {
             return true;
         } else {
             return false;
@@ -58,7 +46,6 @@ Player.prototype.collisionBetween = function (player, enemy) {
 
 Player.prototype.updateScore = function (value) {
     this.score += value;
-    this.winGame();
 };
 
 Player.prototype.addLife = function () {
@@ -66,26 +53,8 @@ Player.prototype.addLife = function () {
 };
 
 Player.prototype.takeLife = function () {
-    if (this.lives > 0) {
-        this.lives--;
-        deleteHeartFromBoard();
-    } else {
-        this.loseGame();
-    }
+    this.lives--;
 };
-
-Player.prototype.winGame = function () {
-    if (player.x > 58 && player.score > 699) {
-        showWinGameModal();
-        removeEventListenersFromCanvas();
-    }
-};
-
-Player.prototype.loseGame = function () {
-    showGameOverModal();
-    removeEventListenersFromCanvas();
-};
-
 
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -95,22 +64,22 @@ Player.prototype.handleInput = function (key) {
     switch (key) {
         case 'up':
             if (this.y > 0) {
-                this.y -= 83;
+                this.y -= tileHeight;
             };
             break;
         case 'down':
             if (this.y < 370) {
-                this.y += 83;
+                this.y += tileHeight;
             };
             break;
         case 'left':
-            if (this.x >= 101) {
-                this.x -= 101;
+            if (this.x >= tileWidth) {
+                this.x -= tileWidth;
             };
             break;
         case 'right':
             if (this.x <= 303) {
-                this.x += 101;
+                this.x += tileWidth;
             };
             break;
     };
@@ -136,7 +105,6 @@ Gem.prototype.render = function () {
 
 Gem.prototype.update = function (dt) {
     this.hideGemIfNotCollectedInTime(dt);
-    addExtraGems();
 };
 
 Gem.prototype.hideGemIfNotCollectedInTime = function (dt) {
@@ -151,14 +119,16 @@ Gem.prototype.removeFromCanvas = function () {
 };
 
 
-// Block: CREATING ENTITIES
-
-let player = new Player(202, 570);
+// Block: GAME
+let player = new Player(202, 390);
 let allEnemies = [];
 let gems = [];
 let extraGems = [];
 
-function createGameEntities() {
+
+const Game = function () {};
+
+Game.prototype.createGameEntities = function () {
     const bug1 = new Enemy(0, 58, 200);
     const bug2 = new Enemy(-200, 141, 150);
     const bug3 = new Enemy(0, 224, 180);
@@ -166,7 +136,6 @@ function createGameEntities() {
     const bug5 = new Enemy(-200, 224, 250);
     const bug6 = new Enemy(-200, 58, 90);
     const bug7 = new Enemy(-400, 58, 100);
-
 
     allEnemies.splice(0);
     allEnemies.push(bug1, bug2, bug3, bug4, bug5, bug6, bug7);
@@ -177,12 +146,9 @@ function createGameEntities() {
 
     gems.splice(0);
     gems.push(orangeGem, greenGem, starGem);
+};
 
-    player = new Player(202, 390);
-    addEventListenersToCanvas();
-}
-
-function addExtraGems() {
+Game.prototype.addExtraGems = function () {
     const heart = new Gem('images/Heart.png', 0);
     const blueGem = new Gem('images/gem-blue.png', 100);
     const selectorStar = new Gem('images/Star-selector.png', 300);
@@ -192,12 +158,104 @@ function addExtraGems() {
             enemy.speed += 30;
         })
     }
-}
+};
+
+Game.prototype.start = function () {
+    this.hideOverlay();
+    this.hideModal('popup-window-with-instructions');
+    this.createGameEntities();
+};
+
+Game.prototype.reloadAfterGameOver = function () {
+    this.hideModal('popup-window');
+    this.reset();
+    this.createGameEntities();
+};
+
+Game.prototype.reloadAfterWinning = function () {
+    this.hideModal('popup-window-for-winning');
+    this.reset();
+    this.createGameEntities();
+};
+
+Game.prototype.reset = function () {
+    player.lives = 3;
+    player.score = 0;
+    this.updateScoreOnBoard();
+    allEnemies = [];
+    allEnemies.forEach(function (enemy) {
+        enemy.speed -= 30;
+    });
+    gems = [];
+    extraGems = [];
+    this.clearHeartsAfterPreviousGame();
+    this.addHeartToBoard(3);
+};
+
+Game.prototype.updateScoreOnBoard = function () {
+    score.innerHTML = `Score: ${player.score}`;
+};
+
+Game.prototype.deleteHeartFromBoard = function () {
+    const lives = document.getElementById('lives');
+    lives.removeChild(lives.lastElementChild);
+};
+
+Game.prototype.clearHeartsAfterPreviousGame = function () {
+    const lives = document.getElementById('lives');
+    lives.innerHTML = '';
+};
+
+Game.prototype.addHeartToBoard = function (num) {
+    while (num-- > 0) {
+        const lives = document.getElementById('lives');
+        const newHeart = document.createElement('img');
+        newHeart.setAttribute('src', 'images/Heart.png');
+        lives.appendChild(newHeart);
+    }
+};
+
+Game.prototype.displayScoreAfterGame = function () {
+    document.getElementById('total-score').innerHTML = `${player.score}`;
+};
+
+Game.prototype.showGameOverModal = function () {
+    new Audio('audio/Jingle_Lose_01.mp3').play();
+    const modal = document.getElementById('popup-window');
+    modal.style.display = 'block';
+    this.displayScoreAfterGame();
+};
+
+Game.prototype.showWinGameModal = function () {
+    new Audio('audio/Jingle_Achievement.mp3').play()
+    const winModal = document.getElementById('popup-window-for-winning');
+    winModal.style.display = 'block';
+};
+
+Game.prototype.showInstructionModal = function () {
+    const instructions = document.getElementById('popup-window-with-instructions');
+    window.onscroll = function () {
+        instructions.style.top = document.body.scrollTop;
+    };
+    instructions.style.display = 'block';
+    instructions.style.top = document.body.scrollTop;
+};
+
+Game.prototype.hideOverlay = function () {
+    document.getElementById('overlay').style.display = 'none';
+};
+
+Game.prototype.hideModal = function (modalId) {
+    document.getElementById(modalId).style.display = 'none';
+};
+
+const arcade = new Game();
+
 
 // Block: EVENT LISTENERS
 function setupEventListeners() {
     const startGameButton = document.getElementById('start-game-btn');
-    startGameButton.addEventListener('click', startGame);
+    startGameButton.addEventListener('click', startNewGame);
     const newGameButton = document.getElementById('reload-game-btn');
     newGameButton.addEventListener('click', reloadGameAfterGameOver);
     const newGameAfterWinningButton = document.getElementById('reload-game-after-win-btn');
@@ -222,101 +280,27 @@ function removeEventListenersFromCanvas() {
     document.removeEventListener('keyup', keyUpEventListener);
 }
 
-// Block: STARTING, RELOADING & RESETING GAME
-function startGame() {
-    hideOverlay();
-    hideModal('popup-window-with-instructions');
-    createGameEntities();
+
+// INITIALIZING GAME
+
+function initializeGame() {
+    setupEventListeners()
+    arcade.showInstructionModal();
+}
+
+function startNewGame() {
+    arcade.start();
+    addEventListenersToCanvas();
 }
 
 function reloadGameAfterGameOver() {
-    hideModal('popup-window');
-    resetGame();
-    createGameEntities();
+    arcade.reloadAfterGameOver();
+    addEventListenersToCanvas();
+
 }
 
 function reloadGameAfterWinning() {
-    hideModal('popup-window-for-winning');
-    resetGame();
-    createGameEntities();
-}
-
-function resetGame() {
-    player.lives = 3;
-    player.score = 0;
-    updateScoreOnBoard();
-    allEnemies = [];
-    allEnemies.forEach(function (enemy) {
-        enemy.speed -= 30;
-    });
-    gems = [];
-    extraGems = [];
-    clearHeartsAfterPreviousGame();
-    addHeartToBoard(3);
-}
-
-// Block: CHANGES ON BOARD
-function updateScoreOnBoard() {
-    score.innerHTML = `Score: ${player.score}`;
-}
-
-function deleteHeartFromBoard() {
-    const lives = document.getElementById('lives');
-    lives.removeChild(lives.lastElementChild);
-}
-
-function clearHeartsAfterPreviousGame() {
-    const lives = document.getElementById('lives');
-    lives.innerHTML = "";
-}
-
-function addHeartToBoard(num) {
-    while (num-- > 0) {
-        const lives = document.getElementById('lives');
-        const newHeart = document.createElement('img');
-        newHeart.setAttribute('src', 'images/Heart.png');
-        lives.appendChild(newHeart);
-    }
-}
-
-function displayScoreAfterGame() {
-    document.getElementById('total-score').innerHTML = `${player.score}`;
-}
-
-// Block: MODALS
-function showGameOverModal() {
-    new Audio('audio/Jingle_Lose_01.mp3').play();
-    const modal = document.getElementById('popup-window');
-    modal.style.display = 'block';
-    displayScoreAfterGame();
-}
-
-function showWinGameModal() {
-    new Audio('audio/Jingle_Achievement.mp3').play()
-    const winModal = document.getElementById('popup-window-for-winning');
-    winModal.style.display = 'block';
-}
-
-function showInstructionModal() {
-    const instructions = document.getElementById('popup-window-with-instructions');
-    window.onscroll = function () {
-        instructions.style.top = document.body.scrollTop;
-    };
-    instructions.style.display = 'block';
-    instructions.style.top = document.body.scrollTop;
-}
-
-function hideOverlay() {
-    document.getElementById('overlay').style.display = 'none';
-}
-
-function hideModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-}
-
-
-// INITIALIZING GAME
-function initializeGame() {
-    setupEventListeners()
-    showInstructionModal();
+    player.x = 202;
+    arcade.reloadAfterWinning();
+    addEventListenersToCanvas();
 }
