@@ -1,6 +1,7 @@
 const tileWidth = 101;
 const tileHeight = 83;
 
+
 // block: ENEMY
 const Enemy = function (x, y, speed) {
     this.x = x;
@@ -89,9 +90,9 @@ Player.prototype.handleInput = function (key) {
 // block: GEMS
 const Gem = function (sprite, value) {
     // X positions: 0, 101, 202, 303, 404
-    this.x = ((51 - 33) + (101 * Math.floor(Math.random() * 4) + 0));
+    this.x = ((51 - 33) + (tileWidth * Math.floor(Math.random() * 4) + 0));
     // Y positions: 58, 141, 224
-    this.y = ((83 + 70 - 55) + (83 * Math.floor(Math.random() * 3) + 0));
+    this.y = ((tileHeight + 70 - 55) + (tileHeight * Math.floor(Math.random() * 3) + 0));
     this.sprite = sprite;
     this.value = value;
     this.spriteHeight = 66;
@@ -281,8 +282,7 @@ function removeEventListenersFromCanvas() {
 }
 
 
-// INITIALIZING GAME
-
+// block: INITIALIZING GAME
 function initializeGame() {
     setupEventListeners()
     arcade.showInstructionModal();
